@@ -10,5 +10,24 @@
 // flattenList([1, "2", [3, function () { return 4; }, [ "five" ], "six", true, { prop: "val" }]])
 //  ➞ [1, "2", 3, 4, "five", "six", true, { prop: "val" }]
 
-main() {
+List flattenList(List initialList){
+  List finalList = [];
+  for (int i = 0; i < initialList.length; i++) {
+    if (initialList[i] is List) {
+      finalList.addAll(flattenList(initialList[i]));
+    }
+    else if (initialList[i] is Function) {
+
+      finalList.add(initialList[i]());
+    }
+    else {
+      finalList.add(initialList[i]);
+    }
+  }
+  return finalList;
 }
+main() {
+
+  print(flattenList([[1], 2, [[3,4], 5], [[[]]], [[[6]]], 7, 8, []]));
+}
+
