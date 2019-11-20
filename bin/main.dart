@@ -18,7 +18,7 @@ List flattenList(List initialList){
     }
     else if (initialList[i] is Function) {
 
-      finalList.add(initialList[i]());
+      finalList.addAll(flattenList(initialList[i]()));
     }
     else {
       finalList.add(initialList[i]);
