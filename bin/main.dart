@@ -10,18 +10,20 @@
 // flattenList([1, "2", [3, function () { return 4; }, [ "five" ], "six", true, { prop: "val" }]])
 //  ➞ [1, "2", 3, 4, "five", "six", true, { prop: "val" }]
 
-List flattenList(List initialList){
-  List finalList = [];
-  for (int i = 0; i < initialList.length; i++) {
-    if (initialList[i] is List) {
-      finalList.addAll(flattenList(initialList[i]));
+List flattenList(List <dynamic> initialList){
+  List <dynamic> finalList = [];
+  for (dynamic element in initialList) {
+    if (element is List) {
+      finalList.addAll(flattenList(element));
     }
-    else if (initialList[i] is Function) {
-
-      finalList.addAll(flattenList(initialList[i]()));
-    }
-    else {
-      finalList.add(initialList[i]);
+    else if (element is Function) {
+      if (element() is List) {
+        finalList.addAll(flattenList(element()));
+      } else {
+        finalList.add(element());
+      }
+    } else {
+      finalList.add(element);
     }
   }
   return finalList;
@@ -29,5 +31,7 @@ List flattenList(List initialList){
 main() {
 
   print(flattenList([[1], 2, [[3,4], 5], [[[]]], [[[6]]], 7, 8, []]));
+  print(flattenList([1,"2",[3,() => 4,["five"],"six",true,{'prop': "val"}]], ),);
 }
 
+//[1,"2",3,4,"five","six",true,{'prop': "val"}]
